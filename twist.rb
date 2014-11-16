@@ -1,7 +1,8 @@
 require 'bundler'
+require 'cgi'
 Bundler.require
 
-track_keywords = ENV['TWITTER_TRACK_KEYWORDS']
+track_keywords = CGI::escape(ENV['TWITTER_TRACK_KEYWORDS'])
 ignore_users = (ENV['TWITTER_TRACK_IGNORE_USERS'] || '').split(/\s/)
 
 options = {
