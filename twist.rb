@@ -1,8 +1,7 @@
 require 'bundler'
-require 'cgi'
 Bundler.require
 
-track_keywords = CGI::escape(ENV['TWITTER_TRACK_KEYWORDS'])
+track_keywords = ENV['TWITTER_TRACK_KEYWORDS']
 ignore_users = (ENV['TWITTER_TRACK_IGNORE_USERS'] || '').split(/\s/)
 
 options = {
@@ -25,8 +24,7 @@ EM.run do
     next if track_keywords.include?(result['user']['screen_name'])
 
     status_url = "https://twitter.com/#{result['user']['screen_name']}/status/#{result['id']}"
-
-    slack = Slack::Notifier.new(ENV['SLACK_WEBHOOK'], icon_emoji: ':mag_right:', user_name: 'twist')
+    slack = Slack::Notifier.new(ENV['SLACK_WEBHOOK'])
     slack.ping(status_url)
   end
 end
